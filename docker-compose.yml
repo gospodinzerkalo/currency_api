@@ -1,0 +1,22 @@
+version: "3"
+services:
+  db:
+    image: postgres
+    environment:
+      POSTGRES_DATABASE: localhost
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+
+  app:
+    image: todo:alpine
+    restart: always
+    build: .
+    command: "make run"
+    volumes:
+      - ./app:/go/src/app
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    links:
+      - db
